@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.inplaatsbeschrijvingen.be/sitemap-index.xml
