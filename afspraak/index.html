@@ -279,6 +279,12 @@ const MEUBILAIR_VANAF = 25;
     wkVoegPandToe();
   }
 
+  // Links als /afspraak/?soort=werken kiezen meteen de juiste opdracht.
+  try {
+    const gevraagd = new URLSearchParams(location.search).get('soort');
+    const kies = { intrede: 'Intrede (begin huur)', uittrede: 'Uittrede (einde huur)', werken: 'Aanvang werken (vóór de start)', 'aanvang-werken': 'Aanvang werken (vóór de start)', 'einde-werken': 'Einde werken (na de werken)' }[gevraagd || ''];
+    if (kies && soortVeld && [...soortVeld.options].some((o) => o.value === kies)) soortVeld.value = kies;
+  } catch (e) { /* geen probleem */ }
   soortVeld?.addEventListener('change', toonHuurOpties);
   pandVeld?.addEventListener('change', toonHuurOpties);
   toonHuurOpties();
