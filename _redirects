@@ -4,3 +4,6 @@
 /general-8                                /plaatsbeschrijving-huur/         301
 /kopie-van-uittredende-plaatsbeschrijving /plaatsbeschrijving-werken/       301
 /book-online                              /afspraak/                        301
+/post/*                                   /blog/                            301
+/portfolio-collections/*                  /                                 301
+/portfolio-collections                    /                                 301
