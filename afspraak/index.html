@@ -66,8 +66,8 @@ const MEUBILAIR_VANAF = 25;
     const dl = document.querySelector('label[for=datum]');
     const dh = document.getElementById('datum')?.parentElement.querySelector('.hulp');
     const einde = /einde/i.test(soortVeld?.value || '');
-    if (dl) dl.textContent = werken ? (einde ? 'Einde van de werken' : 'Start van de werken') : 'Deadline';
-    if (dh) dh.textContent = werken ? (einde ? 'Wanneer zijn de werken klaar? Wij plannen de opnames erna.' : 'Wanneer beginnen de werken? Wij plannen de opnames ervoor.') : 'Tegen wanneer moet de plaatsbeschrijving gebeuren? Ligt dat nog niet vast, laat dan gerust leeg.';
+    if (dl) dl.textContent = werken ? (einde ? 'Einde van de werken' : 'Start van de werken') : 'Deadline *';
+    if (dh) dh.textContent = werken ? (einde ? 'Wanneer zijn de werken klaar? Wij plannen de opnames erna.' : 'Wanneer beginnen de werken? Wij plannen de opnames ervoor.') : 'Tegen wanneer moet de plaatsbeschrijving gebeuren?';
     if (werken && typeof wkWerkBij === 'function') wkWerkBij();
     if (werken) {
       document.querySelectorAll('#veldSupplementen input[type=checkbox]').forEach(c => { c.checked = false; });
@@ -75,6 +75,15 @@ const MEUBILAIR_VANAF = 25;
       if (bm) bm.value = '';
     }
   };
+
+  // Controle op een bruikbaar e-mailadres en telefoonnummer (België of buitenland).
+  function geldigMail(t) { return /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(String(t || '').trim()); }
+  function geldigTel(t) {
+    const n = String(t || '').replace(/[\s.\-\/()]/g, '');
+    if (/^0\d{8,9}$/.test(n)) return true;                 // 016 12 34 56 of 0470 12 34 56
+    if (/^(\+|00)32\d{8,9}$/.test(n)) return true;        // +32 470 12 34 56
+    return /^(\+|00)[1-9]\d{7,13}$/.test(n);              // ander land
+  }
 
   // ===== Plaatsbeschrijving bij werken: panden, opties en prijs =====
   // Prijzen per pand, zonder btw (vrijstellingsregeling kleine ondernemingen). Intern bewaard in marketing/tarieven-werken.md.
@@ -249,6 +258,8 @@ const MEUBILAIR_VANAF = 25;
         if (!p.straat || !p.huisnummer || !p.gemeente) return `Vul het adres van pand ${p.nr} in.`;
         if (!/^[1-9][0-9]{3}$/.test(p.postcode || '')) return `Vul een geldige postcode in voor pand ${p.nr}.`;
         if (!p.geen_contact && !(p.eigenaar && (p.eigenaar.email || p.eigenaar.telefoon))) return `Geef een e-mailadres of telefoonnummer van de eigenaar van pand ${p.nr}, of duid aan dat u ze niet heeft.`;
+        if (p.eigenaar && p.eigenaar.email && !geldigMail(p.eigenaar.email)) return `Het e-mailadres van de eigenaar van pand ${p.nr} klopt niet.`;
+        if (p.eigenaar && p.eigenaar.telefoon && !geldigTel(p.eigenaar.telefoon)) return `Het telefoonnummer van de eigenaar van pand ${p.nr} klopt niet.`;
       }
     }
     return null;
@@ -475,6 +486,8 @@ const MEUBILAIR_VANAF = 25;
     for (const [i, p] of partijLees().entries()) {
       if (!p.voornaam || !p.achternaam) return `Vul de voornaam en naam van ${rol} ${i + 1} in.`;
       if (!p.email && !p.telefoon) return `Geef een e-mailadres of telefoonnummer van ${rol} ${i + 1}.`;
+      if (p.email && !geldigMail(p.email)) return `Het e-mailadres van ${rol} ${i + 1} klopt niet.`;
+      if (p.telefoon && !geldigTel(p.telefoon)) return `Het telefoonnummer van ${rol} ${i + 1} klopt niet.`;
     }
     return null;
   }
@@ -485,6 +498,8 @@ const MEUBILAIR_VANAF = 25;
     soortVeld?.addEventListener('change', partijWerkBij);
     partijWerkBij();
   }
+
+  try { const vandaag = new Date(); vandaag.setMinutes(vandaag.getMinutes() - vandaag.getTimezoneOffset()); document.getElementById('datum').min = vandaag.toISOString().slice(0, 10); } catch (e) { /* stil */ }
 
   // Wisselt de klant tussen huur en werken, dan beginnen de keuzes van die opdracht opnieuw.
   // (Adres en eigen gegevens blijven staan.)
@@ -637,6 +652,9 @@ const MEUBILAIR_VANAF = 25;
       toon('Vul een geldige Belgische postcode in (4 cijfers).', 'fout');
       return;
     }
+    if (!geldigMail(d.email)) { toon('Uw e-mailadres klopt niet. Kijk het even na.', 'fout'); return; }
+    if (!geldigTel(d.telefoon)) { toon('Uw telefoonnummer klopt niet. Kijk het even na.', 'fout'); return; }
+    if (!werkenAanvraag && !d.datum) { toon('Kies tegen wanneer de plaatsbeschrijving moet gebeuren.', 'fout'); return; }
     const partijFout = werkenAanvraag ? null : partijControle();
     if (partijFout) { toon(partijFout, 'fout'); return; }
     const anderen = werkenAanvraag ? [] : partijLees();
