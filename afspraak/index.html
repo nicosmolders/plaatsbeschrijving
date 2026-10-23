@@ -454,7 +454,7 @@ const MEUBILAIR_VANAF = 25;
     document.getElementById('partijTitel').textContent = `Gegevens van de ${rol}`;
     document.getElementById('partijVraag').textContent = `Kent u de gegevens van de ${rol}? *`;
     document.getElementById('partijNee').hidden = partijKeuze() !== 'nee';
-    document.getElementById('partijNeeTekst').textContent = `Geen probleem. Bezorg ons de gegevens van de ${rol} later gerust nog per mail of telefoon: dan leggen we de afspraak sneller vast en krijgt iedereen het verslag meteen.`;
+    document.getElementById('partijNeeTekst').textContent = `Geen probleem. Bezorg ons de gegevens van de ${rol} later gerust nog per mail of telefoon.`;
     document.getElementById('partijToevoegen').textContent = `+ ${Rol} toevoegen`;
     document.getElementById('partijVelden').hidden = partijKeuze() !== 'ja';
     if (partijKeuze() === 'ja' && !partijLijst.children.length) partijToevoegen();
@@ -485,6 +485,27 @@ const MEUBILAIR_VANAF = 25;
     soortVeld?.addEventListener('change', partijWerkBij);
     partijWerkBij();
   }
+
+  // Wisselt de klant tussen huur en werken, dan beginnen de keuzes van die opdracht opnieuw.
+  // (Adres en eigen gegevens blijven staan.)
+  let vorigeSoort = (soortVeld?.value || '') ? (isWerken() ? 'werken' : 'huur') : '';
+  soortVeld?.addEventListener('change', () => {
+    const nu = soortVeld.value ? (isWerken() ? 'werken' : 'huur') : '';
+    if (vorigeSoort && nu && nu !== vorigeSoort) {
+      if (pandVeld) pandVeld.value = '';
+      const bm = document.getElementById('bemeubeld'); if (bm) bm.value = '';
+      form.querySelectorAll('#meubCheck, input[name=supplement]').forEach((c) => { c.checked = false; });
+      form.querySelectorAll('input[name=partijGekend]').forEach((r) => { r.checked = false; });
+      if (partijLijst) partijLijst.innerHTML = '';
+      if (wkLijst) { wkLijst.innerHTML = ''; wkVoegPandToe(); }
+      werkMeubBij();
+      partijWerkBij();
+      toonHuurOpties();
+      huurWerkBij();
+      wkWerkBij();
+    }
+    vorigeSoort = nu || vorigeSoort;
+  });
 
   // ===== Formulier in stappen =====
   // De velden staan in de HTML onder elkaar; hier verdelen we ze over vier stappen.
