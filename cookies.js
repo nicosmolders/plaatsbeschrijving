@@ -45,19 +45,27 @@
     try { if (geladen && window.gtag) window.gtag('event', naam, gegevens || {}); } catch (e) { /* stil */ }
   };
 
-  var css = '.ck-achter{position:fixed;inset:0;z-index:2147483000;background:rgba(11,49,70,.38);display:flex;align-items:center;justify-content:center;padding:16px;font:14px/1.55 Inter,system-ui,sans-serif}'
-    + '.ck-venster{outline:none;background:#fff;color:#4d5560;border-radius:16px;box-shadow:0 20px 60px rgba(11,49,70,.25);width:100%;max-width:440px;padding:26px 26px 22px}'
-    + '.ck-titel{font-family:"Source Serif 4",Georgia,serif;font-size:20px;font-weight:700;color:#14181c;margin:0 0 8px}'
-    + '.ck-venster p{margin:0 0 18px}.ck-venster a{color:#006ead}'
-    + '.ck-knoppen{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ck-knoppen button{font:inherit;font-weight:600;font-size:14px;padding:11px 12px;border-radius:10px;cursor:pointer;border:1.5px solid #cfd6dd;background:#fff;color:#14181c;transition:border-color .15s ease,background .15s ease}'
-    + '.ck-knoppen button:hover{border-color:#006ead}.ck-knoppen .ck-alles{background:#75ccff;border-color:#75ccff;color:#0b3146}.ck-knoppen .ck-alles:hover{background:#5ec1fb;border-color:#5ec1fb}'
-    + '.ck-meer{display:block;margin:14px auto 0;background:none;border:0;font:inherit;font-size:13px;color:#006ead;cursor:pointer;text-decoration:underline}'
-    + '.ck-keuzes{border:1px solid #e8eaec;border-radius:12px;margin:0 0 16px;overflow:hidden}.ck-keuzes[hidden]{display:none}'
-    + '.ck-rij{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px 14px;border-top:1px solid #e8eaec}.ck-rij:first-child{border-top:0}'
-    + '.ck-rij b{display:block;color:#14181c;font-size:14px}.ck-rij small{display:block;font-size:12.5px;color:#7d8792}'
-    + '.ck-rij input{width:18px;height:18px;flex-shrink:0;accent-color:#006ead}'
+  var css = '.ck-achter{position:fixed;inset:0;z-index:2147483000;background:rgba(11,49,70,.45);display:flex;align-items:center;justify-content:center;padding:16px;font:15px/1.6 Inter,system-ui,sans-serif}'
+    + '.ck-venster{outline:none;background:#fff;color:#4d5560;border-radius:16px;box-shadow:0 24px 70px rgba(11,49,70,.3);width:100%;max-width:660px;max-height:calc(100vh - 32px);display:flex;flex-direction:column;overflow:hidden}'
+    + '.ck-kop{padding:20px 26px;border-bottom:1px solid #e8eaec;flex-shrink:0}.ck-kop img{height:46px;width:auto;display:block}'
+    + '.ck-inhoud{padding:22px 26px 6px;overflow-y:auto}'
+    + '.ck-titel{font-size:17px;font-weight:700;color:#14181c;margin:0 0 12px}'
+    + '.ck-inhoud p{margin:0 0 14px}.ck-inhoud a{color:#14181c;text-decoration:underline}'
+    + '.ck-keuzes{border:1px solid #e8eaec;border-radius:12px;margin:4px 0 18px;overflow:hidden}.ck-keuzes[hidden]{display:none}'
+    + '.ck-rij{display:flex;gap:14px;align-items:center;justify-content:space-between;padding:13px 16px;border-top:1px solid #e8eaec;margin:0;cursor:pointer;font-weight:400}.ck-schak{position:relative;display:block;flex-shrink:0}.ck-rij:first-child{border-top:0;cursor:default}'
+    + '.ck-rij b{display:block;color:#14181c;font-size:14.5px}.ck-rij small{display:block;font-size:13px;font-weight:400;color:#7d8792;line-height:1.45}'
+    + '.ck-rij input{position:absolute;opacity:0;width:1px;height:1px}.ck-rij i{display:block;width:40px;height:22px;border-radius:99px;background:#cfd6dd;position:relative;flex-shrink:0;transition:background .15s ease}'
+    + '.ck-rij i:after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:transform .15s ease}'
+    + '.ck-rij input:checked+i{background:#006ead}.ck-rij input:checked+i:after{transform:translateX(18px)}.ck-rij input:disabled+i{opacity:.55}.ck-rij input:focus-visible+i{outline:2px solid #006ead;outline-offset:2px}'
+    + '.ck-voet{display:flex;align-items:center;gap:12px;padding:16px 26px;border-top:1px solid #e8eaec;flex-shrink:0}.ck-voet .ck-rechts{display:flex;gap:12px;margin-left:auto}'
+    + '.ck-voet button{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:600;font-size:15px;padding:12px 24px;border-radius:99px;cursor:pointer;border:1.5px solid #006ead;background:#fff;color:#006ead;white-space:nowrap;transition:background .15s ease,border-color .15s ease}'
+    + '.ck-voet button:hover{background:#eaf6ff}.ck-voet .ck-ja{background:#75ccff;border-color:#75ccff;color:#0b3146}.ck-voet .ck-ja:hover{background:#5ec1fb;border-color:#5ec1fb}'
     + '.ck-open{overflow:hidden}'
-    + '@media (max-width:480px){.ck-venster{padding:22px 18px 18px}.ck-knoppen{grid-template-columns:1fr}}';
+    + '@media (max-width:640px){.ck-achter{align-items:flex-end;padding:10px}.ck-kop,.ck-inhoud,.ck-voet{padding-left:18px;padding-right:18px}.ck-inhoud{font-size:14px}'
+    + '.ck-voet{flex-direction:column-reverse;align-items:stretch}.ck-voet .ck-rechts{flex-direction:column-reverse;margin-left:0}.ck-voet button{width:100%}}';
+
+  var TANDWIEL = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
+  var PIJL = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>';
 
   function sluit(achter) { achter.remove(); document.documentElement.classList.remove('ck-open'); }
 
@@ -72,21 +80,32 @@
     var achter = document.createElement('div');
     achter.className = 'ck-achter';
     achter.innerHTML = '<div class="ck-venster" role="dialog" aria-modal="true" aria-labelledby="ck-titel">'
-      + '<div class="ck-titel" id="ck-titel">Cookies</div>'
-      + '<p>Onze website heeft geen cookies nodig om te werken. Met uw toestemming gebruiken we cookies voor bezoekersstatistieken, zodat we de website kunnen verbeteren. <a href="/privacy/#cookies">Meer info</a></p>'
-      + '<div class="ck-keuzes" hidden>'
-      +   '<label class="ck-rij"><span><b>Noodzakelijk</b><small>Onthoudt uw keuze. Altijd aan.</small></span><input type="checkbox" checked disabled></label>'
-      +   '<label class="ck-rij"><span><b>Statistieken</b><small>Google Analytics, nooit voor reclame.</small></span><input type="checkbox" class="ck-stat"></label>'
+      + '<div class="ck-kop"><img src="/mail-logo.png" alt="Inplaatsbeschrijvingen"></div>'
+      + '<div class="ck-inhoud">'
+      +   '<div class="ck-titel" id="ck-titel">Cookies op onze website</div>'
+      +   '<p>Onze website werkt zonder cookies. Met uw toestemming gebruiken we wel cookies van Google Analytics. Zo zien we hoeveel bezoekers we hebben en welke pagina\'s ze bekijken, en kunnen we onze website verbeteren. Voor reclame gebruiken we ze nooit.</p>'
+      +   '<p class="ck-uitleg">Wilt u zelf kiezen, klik dan op \'Zelf instellen\'. Met \'Accepteren en doorgaan\' gaat u akkoord met de cookies zoals beschreven in onze <a href="/privacy/#cookies">privacyverklaring</a>. U kan uw keuze altijd wijzigen via \'Cookies\' onderaan elke pagina.</p>'
+      +   '<div class="ck-keuzes" hidden>'
+      +     '<div class="ck-rij"><span><b>Noodzakelijk</b><small>Onthoudt uw cookiekeuze. Altijd actief.</small></span><span class="ck-schak"><input type="checkbox" checked disabled><i></i></span></div>'
+      +     '<label class="ck-rij"><span><b>Statistieken</b><small>Google Analytics: hoeveel bezoekers en welke pagina\'s. Nooit voor reclame.</small></span><span class="ck-schak"><input type="checkbox" class="ck-stat"><i></i></span></label>'
+      +   '</div>'
       + '</div>'
-      + '<div class="ck-knoppen"><button type="button" class="ck-nood">Enkel noodzakelijke</button><button type="button" class="ck-alles">Alles aanvaarden</button></div>'
-      + '<button type="button" class="ck-meer">Voorkeuren instellen</button>'
+      + '<div class="ck-voet">'
+      +   '<button type="button" class="ck-zelf">Zelf instellen ' + TANDWIEL + '</button>'
+      +   '<div class="ck-rechts"><button type="button" class="ck-nee">Weigeren</button><button type="button" class="ck-ja">Accepteren en doorgaan ' + PIJL + '</button></div>'
+      + '</div>'
       + '</div>';
-    var keuzes = achter.querySelector('.ck-keuzes'), meer = achter.querySelector('.ck-meer');
+    var keuzes = achter.querySelector('.ck-keuzes'), zelf = achter.querySelector('.ck-zelf');
     function kies(ja) { bewaar(ja ? 'ja' : 'nee'); sluit(achter); if (ja) laadGA(); else wisCookies(); }
-    achter.querySelector('.ck-alles').addEventListener('click', function () { kies(true); });
-    achter.querySelector('.ck-nood').addEventListener('click', function () { kies(false); });
-    meer.addEventListener('click', function () {
-      if (keuzes.hidden) { keuzes.hidden = false; meer.textContent = 'Mijn keuze bewaren'; return; }
+    achter.querySelector('.ck-ja').addEventListener('click', function () { kies(true); });
+    achter.querySelector('.ck-nee').addEventListener('click', function () { kies(false); });
+    zelf.addEventListener('click', function () {
+      if (keuzes.hidden) {
+        keuzes.hidden = false;
+        achter.querySelector('.ck-uitleg').hidden = true;
+        zelf.textContent = 'Keuze bewaren';
+        return;
+      }
       kies(achter.querySelector('.ck-stat').checked);
     });
     document.body.appendChild(achter);
