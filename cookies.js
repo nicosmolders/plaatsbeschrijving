@@ -12,6 +12,8 @@
 
   function laadGA() {
     if (geladen) return;
+    // Enkel op de echte website meten, niet op previews of lokaal.
+    if (!/(^|\.)inplaatsbeschrijvingen\.be$/.test(location.hostname)) return;
     geladen = true;
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
