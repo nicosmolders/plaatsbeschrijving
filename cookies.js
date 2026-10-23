@@ -45,11 +45,11 @@
     try { if (geladen && window.gtag) window.gtag('event', naam, gegevens || {}); } catch (e) { /* stil */ }
   };
 
-  var css = '.ck-balk{position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;max-width:560px;margin:0 auto;background:#fff;color:#14181c;border:1px solid #dfe3e8;border-radius:14px;box-shadow:0 12px 40px rgba(11,49,70,.18);padding:18px 20px;font:14px/1.55 Inter,system-ui,sans-serif}'
-    + '.ck-balk p{margin:0 0 14px;color:#4d5560}.ck-balk b{color:#14181c}.ck-balk a{color:#006ead}'
-    + '.ck-knoppen{display:flex;gap:10px}.ck-knoppen button{flex:1;font:inherit;font-weight:600;font-size:14.5px;padding:11px 14px;border-radius:10px;cursor:pointer;border:1.5px solid #cfd6dd;background:#fff;color:#14181c}'
-    + '.ck-knoppen button.ck-ja{background:#75ccff;border-color:#75ccff;color:#0b3146}.ck-knoppen button:hover{border-color:#006ead}'
-    + '@media (max-width:700px){.ck-balk{left:10px;right:10px;bottom:10px;padding:16px}}';
+  var css = '.ck-balk{position:fixed;left:20px;bottom:20px;z-index:9999;max-width:340px;background:#fff;color:#4d5560;border:1px solid #e8eaec;border-radius:12px;box-shadow:0 6px 24px rgba(11,49,70,.10);padding:14px 16px;font:13px/1.5 Inter,system-ui,sans-serif}'
+    + '.ck-balk p{margin:0 0 10px}.ck-balk a{color:#006ead}'
+    + '.ck-knoppen{display:flex;gap:8px}.ck-knoppen button{flex:1;font:inherit;font-weight:600;font-size:13px;padding:7px 12px;border-radius:8px;cursor:pointer;border:1px solid #dfe3e8;background:#fff;color:#14181c;transition:border-color .15s ease,background .15s ease}'
+    + '.ck-knoppen button:hover{border-color:#75ccff;background:#eaf6ff}'
+    + '@media (max-width:700px){.ck-balk{left:10px;right:10px;bottom:10px;max-width:none;padding:12px 14px}}';
 
   function toonBalk() {
     if (document.querySelector('.ck-balk')) return;
@@ -63,7 +63,7 @@
     balk.className = 'ck-balk';
     balk.setAttribute('role', 'dialog');
     balk.setAttribute('aria-label', 'Cookies');
-    balk.innerHTML = '<p><b>Mogen we uw bezoek meetellen?</b> Met Google Analytics zien we welke pagina\'s bezoekers helpen. We gebruiken dit niet voor reclame. Meer in onze <a href="/privacy/">privacyverklaring</a>.</p>'
+    balk.innerHTML = '<p>Mogen we uw bezoek meetellen met Google Analytics? Nooit voor reclame. <a href="/privacy/#cookies">Meer info</a></p>'
       + '<div class="ck-knoppen"><button type="button" class="ck-nee">Weigeren</button><button type="button" class="ck-ja">Aanvaarden</button></div>';
     balk.querySelector('.ck-ja').addEventListener('click', function () { bewaar('ja'); balk.remove(); laadGA(); });
     balk.querySelector('.ck-nee').addEventListener('click', function () { bewaar('nee'); balk.remove(); wisCookies(); });
