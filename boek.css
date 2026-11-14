@@ -1,0 +1,145 @@
+/* Homepagina: de kalender staat meteen in beeld. Zelfde donkerblauwe maand als op de afspraakpagina. */
+.hero .hero-binnen{grid-template-columns:minmax(0,1fr) minmax(0,520px);gap:52px;align-items:start}
+.hero.donker{padding:56px 0 64px}
+.hero .hero-tekst{padding-top:22px}
+.boek{--bk-nacht:#0b3146;--bk-nacht-2:#082535;--bk-ijs:#75ccff;position:relative;z-index:1;scroll-margin-top:92px;border-radius:22px;overflow:hidden;background:var(--vlak);border:1px solid rgba(11,49,70,.08);box-shadow:0 1px 0 rgba(11,49,70,.04),0 2px 6px rgba(11,49,70,.05),0 34px 64px -34px rgba(11,49,70,.5);transition:box-shadow .3s ease}
+.boek.wenk{box-shadow:0 0 0 3px var(--bk-ijs),0 34px 64px -34px rgba(11,49,70,.5)}
+.boek-kop{padding:20px 24px 16px}
+.boek-kop h2{font-family:"Source Serif 4",Georgia,serif;font-size:24px;line-height:1.15;letter-spacing:-.01em;margin:0 0 4px;color:var(--inkt)}
+.boek-kop p{margin:0 0 14px;font-size:14px;line-height:1.5;color:var(--inkt-zacht)}
+.boek-keuze{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+.boek-soort{display:inline-flex;padding:3px;border-radius:12px;background:var(--grijs-sectie);border:1px solid var(--lijn-licht)}
+.boek-soort label{position:relative;cursor:pointer}
+.boek-soort input{position:absolute;inset:0;opacity:0;cursor:pointer;margin:0}
+.boek-soort span{display:block;padding:9px 15px;border-radius:9px;font-size:14px;font-weight:600;color:var(--inkt-zacht);transition:background .18s ease,color .18s ease,box-shadow .18s ease}
+.boek-soort input:checked+span{background:var(--vlak);color:var(--blauw-diep);box-shadow:0 1px 3px rgba(11,49,70,.16)}
+.boek-soort input:focus-visible+span{outline:2px solid var(--blauw);outline-offset:1px}
+.boek-pand{position:relative;min-width:0}
+.boek-pand select{width:100%;height:100%;min-height:44px;padding:0 38px 0 14px;border-radius:12px;border:1px solid var(--lijn);background:var(--vlak);font:inherit;font-size:14px;font-weight:600;color:var(--inkt);appearance:none;-webkit-appearance:none;cursor:pointer;text-overflow:ellipsis}
+.boek-pand select:focus-visible{outline:2px solid var(--blauw);outline-offset:1px}
+.boek-pand::after{content:"";position:absolute;right:15px;top:50%;width:8px;height:8px;margin-top:-6px;border-right:2px solid var(--inkt-zacht);border-bottom:2px solid var(--inkt-zacht);transform:rotate(45deg);pointer-events:none}
+#boekLijf{min-height:430px}
+.boek.zonder-kalender #boekLijf{min-height:0}
+.boek.agenda-uit .boek-keuze,.boek.agenda-uit .boek-kop p{display:none}
+.boek.agenda-uit .boek-kop{padding-bottom:6px}
+.boek.zonder-kalender .boek-geen{padding-top:18px}
+.boek-vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.boek-maand{position:relative;padding:18px 22px 16px;color:#fff;background:radial-gradient(120% 90% at 0% 0%,#14476a 0%,rgba(20,71,106,0) 55%),linear-gradient(165deg,var(--bk-nacht),var(--bk-nacht-2));min-height:0}
+.boek-maandkop{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.boek-maandnaam{font-family:"Source Serif 4",Georgia,serif;font-size:26px;line-height:1;font-weight:600;letter-spacing:-.015em;text-transform:capitalize}
+.boek-maandnaam span{font-weight:400;color:var(--bk-ijs)}
+.boek-nav{display:flex;gap:8px}
+.boek-pijl{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);color:#fff;cursor:pointer;transition:background .2s ease,border-color .2s ease}
+.boek-pijl:hover:not(:disabled){background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.35)}
+.boek-pijl:disabled{opacity:.25;cursor:default}
+.boek-week,.boek-raster{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.boek-week{margin-bottom:6px}
+.boek-week span{text-align:center;font-size:12px;font-weight:600;color:rgba(255,255,255,.55);padding:3px 0}
+.boek-week span:nth-child(n+6){color:rgba(255,255,255,.35)}
+.boek-cel{height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:none;padding:0;font:inherit;border-radius:12px;color:#fff}
+.boek-cel span{font-size:15px;line-height:1;font-variant-numeric:tabular-nums}
+.boek-cel.dicht{color:rgba(255,255,255,.26)}
+.boek-cel.vrij{font-weight:700;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);cursor:pointer;transition:background .18s ease,box-shadow .18s ease,transform .12s ease}
+.boek-cel.vrij:hover{background:rgba(255,255,255,.15);box-shadow:inset 0 0 0 1px rgba(117,204,255,.6)}
+.boek-cel.vrij:active{transform:scale(.96)}
+.boek-cel.vandaag:not(.actief){box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.45)}
+.boek-cel.actief{background:var(--bk-ijs);color:var(--bk-nacht);box-shadow:0 10px 24px -10px rgba(117,204,255,.85)}
+.boek-cel:focus-visible,.boek-pijl:focus-visible,.boek-eerst:focus-visible{outline:2px solid var(--bk-ijs);outline-offset:2px}
+.boek-bol{display:inline-flex;gap:2.5px;height:4px}
+.boek-bol b{width:4px;height:4px;border-radius:50%;background:var(--bk-ijs);opacity:.25}
+.boek-bol.d1 b:nth-child(1),.boek-bol.d2 b:nth-child(-n+2),.boek-bol.d3 b{opacity:1}
+.boek-cel.actief .boek-bol b{background:var(--bk-nacht)}
+.boek-raster.van-rechts{animation:bkRechts .32s cubic-bezier(.2,.7,.2,1)}
+.boek-raster.van-links{animation:bkLinks .32s cubic-bezier(.2,.7,.2,1)}
+@keyframes bkRechts{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+@keyframes bkLinks{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+.boek-eerst{display:inline-flex;align-items:center;gap:9px;margin-top:14px;padding:7px 13px 7px 11px;border-radius:999px;border:1px solid rgba(117,204,255,.35);background:rgba(117,204,255,.16);color:#dff2ff;font:inherit;font-size:13px;cursor:pointer;transition:background .2s ease,border-color .2s ease}
+.boek-eerst b{color:#fff;font-weight:700}
+.boek-eerst:hover{background:rgba(117,204,255,.26);border-color:rgba(117,204,255,.6)}
+.boek-eerst i{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,.22)}
+.boek-schim{background:rgba(255,255,255,.07);border-radius:12px;animation:bkSchim 1.4s ease-in-out infinite}
+.boek-schim-titel{display:block;width:160px;height:24px;border-radius:8px}
+@keyframes bkSchim{0%,100%{opacity:.45}50%{opacity:1}}
+
+.boek-uren{padding:16px 24px 4px;min-height:112px}
+.boek-dag{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;margin-bottom:12px}
+.boek-dag b{font-family:"Source Serif 4",Georgia,serif;font-size:19px;font-weight:600;letter-spacing:-.01em;color:var(--inkt)}
+.boek-dag span{font-size:13px;color:var(--inkt-licht)}
+.boek-urenlijst{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.boek-uur{padding:9px 4px;border-radius:12px;border:1px solid var(--lijn-licht);background:var(--vlak);font:inherit;font-size:15.5px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--blauw-diep);cursor:pointer;transition:border-color .18s ease,box-shadow .18s ease,background .18s ease,color .18s ease}
+.boek-uur:hover{border-color:var(--blauw-rand);box-shadow:0 8px 20px -14px rgba(0,110,173,.7)}
+.boek-uur:focus-visible{outline:2px solid var(--blauw);outline-offset:2px}
+.boek-uur.actief{background:var(--blauw-diep);border-color:var(--blauw-diep);color:#fff;box-shadow:0 14px 28px -16px rgba(11,49,70,.95)}
+.boek-laadtekst{margin:0;font-size:14px;color:var(--inkt-licht)}
+
+.boek-voet{padding:14px 24px 22px}
+.boek-verder{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 20px;border-radius:var(--radius);border:0;font:inherit;font-size:15.5px;font-weight:700;cursor:pointer;background:var(--logo-blauw);color:var(--blauw-diep);box-shadow:0 5px 16px #75ccff73,inset 0 -2px #006ead47;transition:transform .16s ease,box-shadow .16s ease,filter .16s ease,opacity .2s ease}
+.boek-verder:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.03)}
+.boek-verder:disabled{background:var(--grijs-sectie);color:var(--inkt-licht);box-shadow:none;cursor:default}
+.boek-verder:focus-visible{outline:2px solid var(--blauw);outline-offset:2px}
+.boek-samen{margin:10px 0 0;font-size:13px;line-height:1.5;color:var(--inkt-zacht);text-align:center}
+.boek-samen b{color:var(--inkt);font-weight:600}
+.boek-anders{margin:8px 0 0;font-size:13px;text-align:center;color:var(--inkt-licht)}
+.boek-anders a{color:var(--blauw);font-weight:600}
+.boek-geen{padding:6px 24px 26px}
+.boek-geen p{margin:0 0 16px;font-size:14.5px;line-height:1.6;color:var(--inkt-zacht)}
+.boek-geen .knop{width:100%}
+
+@media (prefers-reduced-motion:reduce){.boek-raster.van-rechts,.boek-raster.van-links,.boek-schim{animation:none}.boek{transition:none}}
+@media (max-width:1040px){.hero .hero-binnen{grid-template-columns:minmax(0,1fr) minmax(0,460px);gap:36px}}
+@media (max-width:900px){
+  /* Op de gsm staat de kalender meteen onder de titel, vóór de uitleg. */
+  .hero.donker{padding:32px 0 44px}
+  .hero .hero-binnen{grid-template-columns:minmax(0,1fr);gap:0}
+  .hero .hero-tekst{display:contents}
+  .hero .hero-tekst>*{order:1}
+  .hero .hero-tekst>.hero-badge{justify-self:start}
+  .hero .hero-tekst>.opschrift{justify-self:start}
+  .hero .hero-tekst>h1{margin-bottom:22px}
+  .hero .boek{order:2;max-width:560px;width:100%;margin:0 auto 28px}
+  .hero .hero-tekst>.lead,.hero .hero-tekst>.hero-knoppen,.hero .hero-tekst>.hero-punten{order:3}
+  .hero .hero-knoppen a[href="#boek"]{display:none}
+  .hero .hero-tekst>.hero-knoppen{margin:22px 0 22px}
+}
+@media (max-width:520px){
+  .boek{border-radius:20px}
+  .boek-kop{padding:20px 16px 16px}
+  .boek-keuze{grid-template-columns:minmax(0,1fr)}
+  .boek-soort{display:grid;grid-template-columns:1fr 1fr}
+  .boek-soort span{text-align:center}
+  .boek-maand{padding:18px 12px 16px}
+  .boek-maandkop{padding:0 4px}
+  .boek-week,.boek-raster{gap:4px}
+  .boek-uren{padding:16px 16px 4px}
+  .boek-urenlijst{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .boek-voet{padding:12px 16px 20px}
+  .boek-geen{padding:4px 16px 22px}
+}
+
+/* Homepagina: echte beelden. Onze inspectie-app en het team. */
+.beeld-rij{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:56px;align-items:center}
+.beeld-tekst h2{margin-bottom:14px}
+.beeld-tekst p{max-width:46ch;margin-bottom:20px}
+.beeld-lijst{list-style:none;margin:0;padding:0;display:grid;gap:11px}
+.beeld-lijst li{position:relative;padding-left:30px;font-weight:600;color:var(--inkt);font-size:15px}
+.beeld-lijst li::before{content:"";position:absolute;left:0;top:2px;width:19px;height:19px;border-radius:6px;background:var(--logo-blauw) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230b3146' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='19 7 10 17 5 12'/%3E%3C/svg%3E") center/12px no-repeat}
+.beeld-tablet{margin:0}
+.tablet{padding:11px;border-radius:26px;background:#14181c;box-shadow:0 2px 0 rgba(255,255,255,.08) inset,0 40px 70px -36px rgba(11,49,70,.55),0 12px 26px -14px rgba(20,24,28,.35)}
+.tablet img{display:block;width:100%;height:auto;border-radius:16px}
+.beeld-tablet figcaption{margin-top:14px;font-size:13px;color:var(--inkt-licht);text-align:center}
+.team-rij{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.team-tekst h2{margin-bottom:14px}
+.team-tekst p{max-width:44ch;margin-bottom:18px}
+.tekstlink{font-weight:700;color:var(--blauw);text-decoration:none}
+.tekstlink:hover{text-decoration:underline}
+.team-fotos{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.team-lid{display:block;text-decoration:none;color:var(--inkt);border-radius:var(--radius-groot);overflow:hidden;background:var(--vlak);border:1px solid var(--lijn);box-shadow:var(--schaduw);transition:transform .18s ease,box-shadow .18s ease}
+.team-lid:hover{transform:translateY(-2px);box-shadow:var(--schaduw-op);text-decoration:none}
+.team-lid img{display:block;width:100%;height:auto;aspect-ratio:7/8;object-fit:cover}
+.team-lid span{display:block;padding:13px 16px 15px;font-size:13.5px;line-height:1.45;color:var(--inkt-zacht)}
+.team-lid b{display:block;font-size:15.5px;color:var(--inkt)}
+@media (max-width:900px){
+  .beeld-rij,.team-rij{grid-template-columns:minmax(0,1fr);gap:30px}
+}
+@media (prefers-reduced-motion:reduce){.team-lid{transition:none}}

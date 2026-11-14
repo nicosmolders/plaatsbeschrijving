@@ -86,6 +86,13 @@
 .mk-wacht{display:flex;align-items:center;gap:18px;padding:24px 26px;grid-template-columns:none;color:#fff;background:radial-gradient(120% 120% at 0% 0%,#14476a 0%,rgba(20,71,106,0) 60%),linear-gradient(165deg,#0b3146,#082535)}
 .mk-wacht p{margin:0;font-size:14.5px;line-height:1.55;color:rgba(255,255,255,.82);max-width:52ch}
 .mk-wacht-ico{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;flex:none;background:rgba(117,204,255,.16);color:#75ccff}
+.moment-band{display:flex;align-items:center;gap:12px;margin:0 0 22px;padding:12px 14px;border-radius:14px;background:linear-gradient(90deg,#f1f8fe,#fff);border:1px solid var(--blauw-rand)}
+.moment-band[hidden]{display:none}
+.moment-band-ico{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--blauw-diep);color:var(--logo-blauw)}
+.moment-band-tekst{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+.moment-band-tekst small{font-size:12px;color:var(--inkt-licht)}
+.moment-band-tekst b{font-size:14.5px;color:var(--inkt)}
+.moment-band button{border:0;background:none;padding:6px 4px;font:inherit;font-size:13.5px;font-weight:700;color:var(--blauw);cursor:pointer;text-decoration:underline}
 .moment-geen{display:flex;gap:10px;align-items:flex-start;margin:16px 0 4px;font-size:13.5px;line-height:1.5;color:var(--inkt-zacht);font-weight:400;cursor:pointer}
 .moment-geen input{margin-top:3px;width:17px;height:17px;flex:none;accent-color:var(--blauw-diep)}
 @media (prefers-reduced-motion:reduce){.mk-raster.van-rechts,.mk-raster.van-links,.mk-vink,.mk-schim{animation:none}}
@@ -688,6 +695,7 @@ const MEUBILAIR_VANAF = 25;
   function momentGekozen() { return !!MOMENT.keuze && momentStapZichtbaar(); }
   function momentKnopTekst() { return momentGekozen() ? 'Afspraak vastleggen' : 'Aanvraag versturen'; }
   function momentNaVerwerk() {
+    if (typeof momentBand === 'function') momentBand();
     const k = document.getElementById('verzendKnop');
     if (k && !k.disabled) k.textContent = momentKnopTekst();
     const na = k && k.parentElement && k.parentElement.parentElement ? k.parentElement.parentElement.querySelector('.hulp[data-moment-oud]') || (k.parentElement.nextElementSibling && k.parentElement.nextElementSibling.classList.contains('hulp') ? k.parentElement.nextElementSibling : null) : null;
@@ -987,6 +995,41 @@ const MEUBILAIR_VANAF = 25;
   function zichtbareStappen() { return STAPPEN.map((_, n) => n).filter((n) => !(n === 2 && isWerken()) ); }
   function volgendeStap(i) { return zichtbareStappen().find((n) => n > i); }
   function vorigeStap(i) { const v = zichtbareStappen().filter((n) => n < i); return v.length ? v[v.length - 1] : 0; }
+
+  // Het gekozen moment blijft in beeld op de volgende stappen, met een knop om het te wijzigen.
+  function momentBand() {
+    const kop = form.querySelector('.stap-kop');
+    if (!kop) return;
+    let band = document.getElementById('momentBand');
+    const toon = momentGekozen() && stapNu > 0 && STAPPEN[stapNu];
+    if (!toon) { if (band) band.hidden = true; return; }
+    if (!band) {
+      band = document.createElement('div'); band.id = 'momentBand'; band.className = 'moment-band';
+      kop.insertAdjacentElement('afterend', band);
+      band.addEventListener('click', (e) => { if (e.target.closest('button')) ga(0); });
+    }
+    const eind = MOMENT.data && MOMENT.data.duur_min ? ` tot ${mUur(eindUur(MOMENT.keuze.uur, MOMENT.data.duur_min))}` : '';
+    band.innerHTML = `<span class="moment-band-ico" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="moment-band-tekst"><small>Uw moment</small><b>${mGroot(MOMENT.keuze.datum)}, ${mUur(MOMENT.keuze.uur)}${eind}</b></span><button type="button">Wijzigen</button>`;
+    band.hidden = false;
+  }
+  // Vanaf de homepagina: het moment dat daar gekozen werd, staat hier klaar en de bezoeker begint bij het adres.
+  (async function vanHome() {
+    await new Promise((r) => setTimeout(r, 0));   // eerst de rest van de pagina klaar
+    let k = null;
+    try { k = JSON.parse(sessionStorage.getItem('ipb_moment') || 'null'); sessionStorage.removeItem('ipb_moment'); } catch (e) { /* privévenster */ }
+    if (!k || !k.soort || !k.pandtype || !k.datum || !k.uur || !(Date.now() - k.t < 30 * 60000)) return;
+    if (!soortVeld || !pandVeld || !MOMENT.actief) return;
+    if (![...soortVeld.options].some((o) => o.value === k.soort) || ![...pandVeld.options].some((o) => o.value === k.pandtype)) return;
+    soortVeld.value = k.soort; soortVeld.dispatchEvent(new Event('change', { bubbles: true }));
+    pandVeld.value = k.pandtype;
+    MOMENT.keuze = { datum: k.datum, uur: k.uur }; MOMENT.dag = k.datum; MOMENT.maand = k.datum.slice(0, 7);
+    pandVeld.dispatchEvent(new Event('change', { bubbles: true }));
+    for (let n = 0; n < 150 && (MOMENT.laadt || !MOMENT.data) && !MOMENT.fout; n++) await new Promise((r) => setTimeout(r, 60));
+    if (!MOMENT.actief || stapNu !== 0) return;
+    if (momentGekozen()) { ga(1, true); return; }
+    const f = STAPPEN[0] && STAPPEN[0].fout;
+    if (f && momentStapZichtbaar()) { f.textContent = 'Het moment dat u koos, is net ingenomen. Kies hieronder een ander moment.'; f.hidden = false; }
+  })();
 
   function ga(i, stil) {
     // Een immokantoor, syndicus of aannemer vraagt meestal aan als bedrijf.
