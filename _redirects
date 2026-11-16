@@ -9,3 +9,7 @@
 /post/*                                   /blog/                            301
 /portfolio-collections/*                  /                                 301
 /portfolio-collections                    /                                 301
+/regio                                    /#werkgebied                      301
+/regio/                                   /#werkgebied                      301
+/plaatsbeschrijving                       /#werkgebied                      301
+/plaatsbeschrijving/                      /#werkgebied                      301
