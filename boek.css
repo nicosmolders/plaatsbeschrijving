@@ -145,11 +145,11 @@
 .team-tekst p{max-width:44ch;margin-bottom:18px}
 .tekstlink{font-weight:700;color:var(--blauw);text-decoration:none}
 .tekstlink:hover{text-decoration:underline}
-.team-fotos{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.team-fotos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .team-lid{display:block;text-decoration:none;color:var(--inkt);border-radius:var(--radius-groot);overflow:hidden;background:var(--vlak);border:1px solid var(--lijn);box-shadow:var(--schaduw);transition:transform .18s ease,box-shadow .18s ease}
 .team-lid:hover{transform:translateY(-2px);box-shadow:var(--schaduw-op);text-decoration:none}
 .team-lid img{display:block;width:100%;height:auto;aspect-ratio:7/8;object-fit:cover}
-.team-lid span{display:block;padding:13px 16px 15px;font-size:13.5px;line-height:1.45;color:var(--inkt-zacht)}
+.team-lid span{display:block;padding:12px 13px 14px;font-size:13.5px;line-height:1.45;color:var(--inkt-zacht)}
 .team-lid b{display:block;font-size:15.5px;color:var(--inkt)}
 @media (max-width:900px){
   .beeld-rij,.team-rij{grid-template-columns:minmax(0,1fr);gap:30px}
@@ -157,5 +157,8 @@
 @media (max-width:520px){
   .schade-kader{grid-template-columns:minmax(0,1fr);padding:16px}
   .schade-foto{max-width:260px}
+  .team-fotos{gap:10px}
+  .team-lid span{padding:9px 9px 11px;font-size:12px}
+  .team-lid b{font-size:13.5px}
 }
 @media (prefers-reduced-motion:reduce){.team-lid{transition:none}}
